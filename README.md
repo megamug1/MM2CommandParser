@@ -26,4 +26,4 @@ For now a separator is expected to be a space (' '), but may include other chara
 $A40 -> Jump for 0.4 seconds\
 $YAR40 -> Jump to the right by holding both jump buttons for 0.4 seconds\
 $D10 $YAD40 -> duck jump by holding down for 0.1 seconds before jumping while holding down for 0.4 seconds\
-$YUZ5 $5 $B20 -> twirl jump by dashing, holding up, and spin jumping. then waiting 0.05 seconds. then jumping for 0.2 seconds\
+$YUZ5 $5 $B20 -> twirl jump by dashing, holding up, and spin jumping. then waiting 0.05 seconds. then jumping for 0.2 seconds
