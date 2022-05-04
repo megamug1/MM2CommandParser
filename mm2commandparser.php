@@ -142,6 +142,9 @@
 			if ($instruction == 'f' or $instruction == 'fire'){$instructions = ["Y .2s"];}
 			if ($instruction == 'duckjump' or $instruction == 'dj'){$instructions = ["DPAD_DOWN .1s","Y .4s A .4s DPAD_DOWN .4s"];}
 			if ($instruction == 'twirljump' or $instruction == 'tj'){$instructions = ["Y .05s DPAD_UP .05s R .05s",".05s","B .2s"];}
+			if ($instruction == 'w'){$instructions = [".05s"];}
+			if ($instruction == 'ww'){$instructions = [".5s"];}
+			if ($instruction == 'www'){$instructions = ["2.0s"];}
 			
 			if(count($instructions) == 0) $this->logDebug("Unknown instruction: " . $instruction . " - Skipping instruction");
 			
@@ -272,7 +275,7 @@
 
 
 	
-	$c = '$a40 jump $YUZ5 $5 $B20';
+	$c = '$a40 www $YUZ5 w ww';
 	$c = strtolower($c);
 
 	$parser = new MM2CommandParser();
