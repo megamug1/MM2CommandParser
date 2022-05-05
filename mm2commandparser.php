@@ -7,6 +7,7 @@
 		private $simple_command_prefix;
 		private $advanced_command_prefix;
 		private $logging_enabled;
+		private $simple_instructions;
 	
 		function __construct( $max_hold_time = 2.0, $min_hold_time = 0.05, $simple_command_prefix = '', $advanced_command_prefix = '$' ) {
 			$this->max_hold_time = $max_hold_time;
@@ -14,12 +15,33 @@
 			$this->simple_command_prefix = $simple_command_prefix;
 			$this->advanced_command_prefix = $advanced_command_prefix;
 
-			$logging_enabled = false;
+			$this->logging_enabled = false;
+
+			if(file_exists('defaultsimpleinst.txt'))
+			{
+				$this->setSimpleInstructionList('defaultsimpleinst.txt');
+			}
+			else
+			{
+				$this->simple_instructions = [];
+			}
 		}
 
 		function enableLogging($enable)
 		{
 			$this->logging_enabled = $enable;
+		}
+
+		function setSimpleInstructionList($filename)
+		{
+			if(!file_exists($filename))
+			{
+				$this->logDebug("Could not read instructions from file: " . $filename);
+				return;
+			}
+
+			$lines = file($filename);
+			$this->readSimpleInstructionList($lines);
 		}
 	
 		function parseCommand($command, $allow_advanced = false, $max_instructions = 5) 
@@ -137,30 +159,46 @@
 		}
 
 		function processSimpleInstruction($instruction)
-		{
-			//TODO - read these options from a file
-
-			$instructions = []; //empty instruction list by default
-			
-			//convert chat input into a simple instruction
-			if ($instruction == 'jump' or $instruction == 'j'){$instructions = ["A .4s"];}
-			if ($instruction == 'rightjump' or $instruction == 'rrj'){$instructions = ["Y .4s A .4s DPAD_RIGHT .4s"];}
-			if ($instruction == 'leftjump' or $instruction == 'lj'){$instructions = ["Y .4s A .4s DPAD_LEFT .4s"];}
-			if ($instruction == 'right' or $instruction == 'r'){$instructions = ["Y .4s DPAD_RIGHT .4s"];}
-			if ($instruction == 'left' or $instruction == 'l'){$instructions = ["Y .4s DPAD_LEFT .4s"];}
-			if ($instruction == 'down' or $instruction == 'd'){$instructions = ["DPAD_DOWN .4s"];}
-			if ($instruction == 'up' or $instruction == 'u'){$instructions = ["DPAD_UP .4s"];}
-			if ($instruction == 'f' or $instruction == 'fire'){$instructions = ["Y .2s"];}
-			if ($instruction == 'duckjump' or $instruction == 'dj'){$instructions = ["DPAD_DOWN .1s","Y .4s A .4s DPAD_DOWN .4s"];}
-			if ($instruction == 'twirljump' or $instruction == 'tj'){$instructions = ["Y .05s DPAD_UP .05s R .05s",".05s","B .2s"];}
-			if ($instruction == 'w'){$instructions = [".05s"];}
-			if ($instruction == 'ww'){$instructions = [".5s"];}
-			if ($instruction == 'www'){$instructions = ["2.0s"];}
-			
-			if(count($instructions) == 0) $this->logDebug("Unknown instruction: " . $instruction . " - Skipping instruction");
+		{			
+			if(!array_key_exists($instruction, $this->simple_instructions)) 
+			{
+				$this->logDebug("Unknown instruction: " . $instruction . " - Skipping instruction");
+				return [];
+			}
 			
 			//return the simple instructions
-			return $instructions;
+			return $this->simple_instructions[$instruction];
+		}
+
+		function readSimpleInstructionList($lines)
+		{
+			//wipe out old instructions
+			$this->simple_instructions = [];
+
+			foreach($lines as $line)
+			{
+				//split the line on '='
+				$parts = explode('=', $line);
+
+				if(count($parts) != 2)
+				{
+					$this->logDebug("Invalid format, there should be a single equals sign. Skipping instruction: " . $line);
+					continue;
+				}
+
+				//process the instructions as a csv
+				$instructions = str_getcsv($parts[1]);
+
+				//split the keywords on '|'
+				$keywords = explode('|', $parts[0]);
+
+				//for each keyword set the instructions as the results
+				foreach($keywords as $keyword)
+				{
+					$keyword = trim($keyword);
+					$this->simple_instructions[$keyword] = $instructions;
+				}
+			}
 		}
 
 		function processAdvancedInstruction($instruction)
