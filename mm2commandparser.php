@@ -12,12 +12,22 @@
 			$this->min_hold_time = $min_hold_time;
 			$this->simple_command_prefix = $simple_command_prefix;
 			$this->advanced_command_prefix = $advanced_command_prefix;
+
+			$logging_enabled = false;
+		}
+
+		function enableLogging($enable)
+		{
+			$this->logging_enabled = $enable;
 		}
 	
 		function parseCommand($command, $allow_advanced = false, $max_instructions = 5) 
 		{
 			$instructions = [];
 			$instruction_count = 0;
+
+			//ensure string is lowercase for parsing
+			$command = strtolower($command);
 			
 			//determine length of first instruction
 			$length = $this->getFirstInstructionLength($command);
@@ -268,17 +278,11 @@
 	
 		function logDebug($message)
 		{
-			//TODO - replace this with your logging mechanism
-			print($message . PHP_EOL);
+			if($this->logging_enabled)
+			{
+				print($message . PHP_EOL);
+			}
 		}
 	}
-
-
-	
-	$c = '$a40 www $YUZ5 w ww';
-	$c = strtolower($c);
-
-	$parser = new MM2CommandParser();
-	$parser->parseCommand($c, true);
 	
 ?>
