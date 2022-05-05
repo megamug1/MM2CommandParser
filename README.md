@@ -23,6 +23,23 @@ $result = $parser->parseCommand($command);
 $other_result = $parser->parseCommand($advancedCommand, true); //second parameter is true to allow for advanced instructions
 ```
 
+# Simple Instruction List File Format
+* Each Instruction should be on a new line
+* Each instruction may have multiple key words separated by a pipe character ('|')
+* The result for the instruction is a csv format of individual instructions
+
+## Example Instructions
+
+A jump instruction where the user can input either 'jump' or 'j'
+```
+jump|j = "A .4s"
+```
+
+A duck jump instruction where the user and input either 'duckjump' or 'dj'
+```
+duckjump|dj = "DPAD_DOWN .1s","Y .4s A .4s DPAD_DOWN .4s"
+```
+
 # Command Syntax
 ## Syntax Examples
 
