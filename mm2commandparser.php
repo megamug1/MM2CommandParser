@@ -6,6 +6,7 @@
 		private $min_hold_time;
 		private $simple_command_prefix;
 		private $advanced_command_prefix;
+		private $logging_enabled;
 	
 		function __construct( $max_hold_time = 2.0, $min_hold_time = 0.05, $simple_command_prefix = '', $advanced_command_prefix = '$' ) {
 			$this->max_hold_time = $max_hold_time;
