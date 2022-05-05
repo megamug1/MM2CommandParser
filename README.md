@@ -43,12 +43,12 @@ duckjump|dj = "DPAD_DOWN .1s","Y .4s A .4s DPAD_DOWN .4s"
 # Command Syntax
 ## Syntax Examples
 
-JUMP -> Jump for 0.4 seconds (assumes the default instruction list is being used)\
-$A40 -> Jump for 0.4 seconds\
-JUMP w $A80 -> Jump for 0.4 seconds, wait for 0.05 seconds, jump for 0.8 seconds (assumes the default instruction list is being used)\
-$YAR40 -> Jump to the right by holding both jump buttons for 0.4 seconds\
-$D10 $YAD40 -> duck jump by holding down for 0.1 seconds before jumping while holding down for 0.4 seconds\
-$YUZ5 $5 $B20 -> twirl jump by dashing, holding up, and spin jumping. then waiting 0.05 seconds. then jumping for 0.2 seconds
+**JUMP** -> Jump for 0.4 seconds (assumes the default instruction list is being used)\
+**$A40** -> Jump for 0.4 seconds\
+**JUMP w $A80** -> Jump for 0.4 seconds, wait for 0.05 seconds, jump for 0.8 seconds (assumes the default instruction list is being used)\
+**$YAR40** -> Jump to the right by holding both jump buttons for 0.4 seconds\
+**$D10 $YAD40** -> duck jump by holding down for 0.1 seconds before jumping while holding down for 0.4 seconds\
+**$YUZ5 $5 $B20** -> twirl jump by dashing, holding up, and spin jumping. then waiting 0.05 seconds. then jumping for 0.2 seconds
 
 ## Syntax Overview
 The general syntax is that you specify an instruction followed by any number of instructions with a separator in between\
